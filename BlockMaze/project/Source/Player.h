@@ -13,4 +13,7 @@ public:
 
 	VECTOR2 position;
 	VECTOR2 speed;
+	float velocity;
+	bool prevJumpKey;
+	bool onGround;
 };

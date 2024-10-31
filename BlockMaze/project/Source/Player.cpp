@@ -2,6 +2,10 @@
 #include "config.h"
 #include "Stage.h"
 
+const float Gravity = 0.3f;
+const float JumpHeight = 40 * 2;
+const float V0 = -sqrtf(2.0f * Gravity * JumpHeight);
+
 Player::Player()
 {
 	hImage = LoadGraph("data/image/chara.png");
@@ -73,6 +77,43 @@ void Player::Update()
 	if (position.y > SCREEN_HEIGHT - 64) {
 		position.y = SCREEN_HEIGHT - 64;
 	}
+
+	if (CheckHitKey(KEY_INPUT_SPACE)) {
+		if (prevJumpKey == false)
+		{
+			if (onGround == true)
+			{
+				//ƒWƒƒƒ“ƒv‚·‚é
+				velocity = V0;
+			}
+			prevJumpKey = true;
+		}
+	}
+	else
+	{
+		prevJumpKey = false;
+	}
+	position.y += velocity;
+	velocity += Gravity;
+	onGround = false;
+
+	//‰º‚É•Ç‚ª‚ ‚é‚©’²‚×‚é
+	int push = s->IsWallDown(position + VECTOR2(0, 40));
+	if (push > 0)
+	{
+		velocity = 0.0f;
+		position.y -= push-1;
+		onGround = true;
+	}
+
+	push = s->IsWallDown(position + VECTOR2(39, 40));
+	if (push > 0)
+	{
+		velocity = 0.0f;
+		position.y -= push-1;
+		onGround = true;
+	}
+
 
 }
 

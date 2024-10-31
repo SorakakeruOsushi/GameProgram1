@@ -20,8 +20,8 @@ void Coin::Update()
 {
 	if (got)
 	{
-		speed += 1.5;
-		position.y -= speed;
+		position.y += v;
+		v += 0.3f;
 		counter -= 1;
 		if (counter == 0)
 		{
@@ -36,7 +36,8 @@ void Coin::Update()
 	if (CircleHit(playerPos, position, 40))
 	{
 		got = true;
-		counter = 10;
+		counter = 50;
+		v = -10.0f;
 	}
 }
 

@@ -16,6 +16,6 @@ public:
 
 	bool got;
 	int counter;
-	float speed;
+	float v;
 };
 
