@@ -43,6 +43,7 @@ void Coin::Update()
 
 void Coin::Draw()
 {
+	Stage* s = FindGameObject<Stage>();
 	//ŠG‚Ì•\Ž¦
-	DrawRectGraph(position.x, position.y, 120, 0, 40, 40, hImage, TRUE);
+	DrawRectGraph(position.x-s->scroll, position.y, 120, 0, 40, 40, hImage, TRUE);
 }

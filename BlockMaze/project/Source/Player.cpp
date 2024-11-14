@@ -13,6 +13,7 @@ Player::Player()
 	position.y = 0;
 	speed.x = 0.0;
 	speed.y = 0.0;
+	goaled = false;
 }
 
 Player::~Player()
@@ -22,13 +23,18 @@ Player::~Player()
 void Player::Update()
 {
 	Stage* s = FindGameObject<Stage>();
+
+
+	if (goaled) {
+		return;
+	}
 	if (CheckHitKey(KEY_INPUT_D)) {
 		position.x += 2.0;
 		//‰E‚É•Ç‚ª‚ ‚é‚©’²‚×‚é
 		int push = s->IsWallRight(position + VECTOR2(39, 0));
-			position.x -= push;
-		 push = s->IsWallRight(position + VECTOR2(39, 39));
-			position.x -= push;
+		position.x -= push;
+		push = s->IsWallRight(position + VECTOR2(39, 39));
+		position.x -= push;
 	}
 	else if (CheckHitKey(KEY_INPUT_A)) {
 		position.x -= 2.0;
@@ -39,14 +45,11 @@ void Player::Update()
 		position.x += push;
 	}
 	else {
-			speed.x = 0.0f;
+		speed.x = 0.0f;
 	}
 	position.x += speed.x;
 	if (position.x < 0) {
 		position.x = 0;
-	}
-	if (position.x > SCREEN_WIDTH - 64) {
-		position.x = SCREEN_WIDTH - 64;
 	}
 
 
@@ -63,12 +66,12 @@ void Player::Update()
 		//‰º‚É•Ç‚ª‚ ‚é‚©’²‚×‚é
 		int push = s->IsWallDown(position + VECTOR2(0, 39));
 		position.y -= push;
-		 push = s->IsWallDown(position + VECTOR2(39, 39));
+		push = s->IsWallDown(position + VECTOR2(39, 39));
 		position.y -= push;
 
 	}
 	else {
-			speed.y = 0.0f;
+		speed.y = 0.0f;
 	}
 	position.y += speed.y;
 	if (position.y < 0) {
@@ -77,6 +80,7 @@ void Player::Update()
 	if (position.y > SCREEN_HEIGHT - 64) {
 		position.y = SCREEN_HEIGHT - 64;
 	}
+
 
 	if (CheckHitKey(KEY_INPUT_SPACE)) {
 		if (prevJumpKey == false)
@@ -93,6 +97,7 @@ void Player::Update()
 	{
 		prevJumpKey = false;
 	}
+
 	position.y += velocity;
 	velocity += Gravity;
 	onGround = false;
@@ -102,7 +107,7 @@ void Player::Update()
 	if (push > 0)
 	{
 		velocity = 0.0f;
-		position.y -= push-1;
+		position.y -= push - 1;
 		onGround = true;
 	}
 
@@ -110,14 +115,45 @@ void Player::Update()
 	if (push > 0)
 	{
 		velocity = 0.0f;
-		position.y -= push-1;
+		position.y -= push - 1;
 		onGround = true;
 	}
+	else
+	{
+		int push = s->IsWallUp(position + VECTOR2(0, 0));
+		if (push > 0)
+		{
+			velocity = 0.0f;
+			position.x -= push;
+		}
+		push = s->IsWallUp(position + VECTOR2(39, 0));
+		if (push > 0)
+		{
+			velocity = 0.0f;
+			position.x -= push;
+		}
+	}
+	if (position.x - s->scroll > 400)
+	{
+		s->scroll = position.x - 400;
+	}
 
+	if (position.x - s->scroll < 0)
+	{
+		s->scroll = position.x + 0;
+	}
+
+
+	if (s->IsGoal(position + VECTOR2(20,20)))
+	{
+		goaled = true;
+	}
 
 }
 
 void Player::Draw()
 {
-	DrawRectGraph(position.x, position.y, 0, 0, 40, 40, hImage, TRUE);
+	Stage* s = FindGameObject<Stage>();
+
+	DrawRectGraph(position.x - s->scroll, position.y, 0, 0, 40, 40, hImage, TRUE);
 }

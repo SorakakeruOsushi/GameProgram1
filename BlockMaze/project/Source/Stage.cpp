@@ -26,6 +26,7 @@ Stage::Stage()
 			}
 		}
 	}
+	scroll = 0;
 }
 
 Stage::~Stage()
@@ -41,11 +42,11 @@ void Stage::Draw()
 		{
 			int x = i * CHIP_SIZE + 100;
 			if (map[j][i] == 1) {
-				DrawRectGraph(x, y, 0, 40, CHIP_SIZE, CHIP_SIZE, hImage, TRUE);
+				DrawRectGraph(x-scroll, y, 0, 40, CHIP_SIZE, CHIP_SIZE, hImage, TRUE);
 			}
-			//if (map[j][i] == 2) {
-			//	DrawRectGraph(x, y, 120, 0, CHIP_SIZE, CHIP_SIZE, hImage, TRUE);
-			//}
+			if (map[j][i] == 8) {
+				DrawRectGraph(x-scroll, y, 160, 0, CHIP_SIZE, CHIP_SIZE, hImage, TRUE);
+			}
 		}
 	}
 
@@ -98,5 +99,15 @@ int Stage::IsWallUp(VECTOR2 pos)
 		return push;
 	}
 	return 0;
+}
+
+bool Stage::IsGoal(VECTOR2 pos)
+{
+	int i = (pos.x - 100) / CHIP_SIZE;
+	int j = (pos.y - 100) / CHIP_SIZE;
+	if (map[j][i] == 8) {
+		return true;
+	}
+	return false;
 }
 	

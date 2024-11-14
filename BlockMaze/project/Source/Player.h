@@ -16,4 +16,6 @@ public:
 	float velocity;
 	bool prevJumpKey;
 	bool onGround;
+
+	bool goaled;
 };
