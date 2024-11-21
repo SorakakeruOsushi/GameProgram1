@@ -10,5 +10,8 @@ public:
 	void Update()override;
 	void Draw()override;
 
+	int score;
+
+	float timer;
 };
 

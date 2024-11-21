@@ -4,6 +4,7 @@
 #include "Stage.h"
 #include "Player.h"
 
+
 Coin::Coin()
 {
 	//コンストラクターで絵のロード

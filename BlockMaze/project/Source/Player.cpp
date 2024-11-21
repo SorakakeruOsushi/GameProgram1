@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "config.h"
 #include "Stage.h"
+#include "GoalText.h"
 
 const float Gravity = 0.3f;
 const float JumpHeight = 40 * 2;
@@ -25,9 +26,8 @@ void Player::Update()
 	Stage* s = FindGameObject<Stage>();
 
 
-	if (goaled) {
-		return;
-	}
+	if (goaled==false) {
+	
 	if (CheckHitKey(KEY_INPUT_D)) {
 		position.x += 2.0;
 		//‰E‚É•Ç‚ª‚ ‚é‚©’²‚×‚é
@@ -98,6 +98,8 @@ void Player::Update()
 		prevJumpKey = false;
 	}
 
+	}
+
 	position.y += velocity;
 	velocity += Gravity;
 	onGround = false;
@@ -147,6 +149,7 @@ void Player::Update()
 	if (s->IsGoal(position + VECTOR2(20,20)))
 	{
 		goaled = true;
+		Instantiate<GoalText>();
 	}
 
 }
